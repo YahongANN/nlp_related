@@ -57,7 +57,7 @@ print(fully_segment('就读北京大学', dic))
 输出了所有可能的单词。由于词库中含有单字，所以结果中也出现了一些单字。
 
 2. 正向最长匹配
-
+[pythontutor.com可视化代码示例](http://www.pythontutor.com/visualize.html#code=def%20forward_segment%28text,%20dic%29%3A%0A%20%20%20%20word_list%20%3D%20%5B%5D%0A%20%20%20%20i%20%3D%200%0A%20%20%20%20while%20i%20%3C%20len%28text%29%3A%0A%20%20%20%20%20%20%20%20longest_word%20%3D%20text%5Bi%5D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20%E5%BD%93%E5%89%8D%E6%89%AB%E6%8F%8F%E4%BD%8D%E7%BD%AE%E7%9A%84%E5%8D%95%E5%AD%97%0A%20%20%20%20%20%20%20%20for%20j%20in%20range%28i%20%2B%201,%20len%28text%29%20%2B%201%29%3A%20%20%20%20%20%20%20%23%20%E6%89%80%E6%9C%89%E5%8F%AF%E8%83%BD%E7%9A%84%E7%BB%93%E5%B0%BE%0A%20%20%20%20%20%20%20%20%20%20%20%20word%20%3D%20text%5Bi%3Aj%5D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20%E4%BB%8E%E5%BD%93%E5%89%8D%E4%BD%8D%E7%BD%AE%E5%88%B0%E7%BB%93%E5%B0%BE%E7%9A%84%E8%BF%9E%E7%BB%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20word%20in%20dic%3A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20%E5%9C%A8%E8%AF%8D%E5%85%B8%E4%B8%AD%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20len%28word%29%20%3E%20len%28longest_word%29%3A%20%20%20%23%20%E5%B9%B6%E4%B8%94%E6%9B%B4%E9%95%BF%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20longest_word%20%3D%20word%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20%E5%88%99%E6%9B%B4%E4%BC%98%E5%85%88%E8%BE%93%E5%87%BA%0A%20%20%20%20%20%20%20%20word_list.append%28longest_word%29%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20%E8%BE%93%E5%87%BA%E6%9C%80%E9%95%BF%E8%AF%8D%0A%20%20%20%20%20%20%20%20i%20%2B%3D%20len%28longest_word%29%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20%E6%AD%A3%E5%90%91%E6%89%AB%E6%8F%8F%0A%20%20%20%20return%20word_list%0A%0Adic%20%3D%20set%28%5B'%E5%B0%B1','%E8%AF%BB','%E5%B0%B1%E8%AF%BB','%E5%8C%97','%E4%BA%AC','%E5%8C%97%E4%BA%AC','%E5%A4%A7','%E5%AD%A6','%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6','%E7%A0%94','%E7%A9%B6','%E7%94%9F','%E7%A0%94%E7%A9%B6','%E7%A0%94%E7%A9%B6%E7%94%9F','%E5%91%BD','%E7%94%9F%E5%91%BD','%E8%B5%B7','%E6%BA%90','%E8%B5%B7%E6%BA%90'%5D%29%0Aprint%28forward_segment%28'%E5%B0%B1%E8%AF%BB%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6',%20dic%29%29%0Aprint%28forward_segment%28'%E7%A0%94%E7%A9%B6%E7%94%9F%E5%91%BD%E8%B5%B7%E6%BA%90',%20dic%29%29&cumulative=false&curInstr=6&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false)
 ```
 def forward_segment(text, dic):
     word_list = []
@@ -78,4 +78,72 @@ print(forward_segment('就读北京大学', dic))
 print(forward_segment('研究生命起源', dic))
 ```
 
+输出
+
+```
+['就读', '北京大学']
+['研究生', '命', '起源']
+```
+3. 逆向最长匹配
+
+
+```
+def backward_segment(text, dic):
+    word_list = []
+    i = len(text) - 1
+    while i >= 0:                                   # 扫描位置作为终点
+        longest_word = text[i]                      # 扫描位置的单字
+        for j in range(0, i):                       # 遍历[0, i]区间作为待查询词语的起点
+            word = text[j: i + 1]                   # 取出[j, i]区间作为待查询单词
+            if word in dic:
+                if len(word) > len(longest_word):   # 越长优先级越高
+                    longest_word = word
+                    break
+        word_list.insert(0, longest_word)           # 逆向扫描，所以越先查出的单词在位置上越靠后
+        i -= len(longest_word)
+    return word_list
+
+dic = load_dictionary()
+print(backward_segment('研究生命起源', dic))
+print(backward_segment('项目的研究', dic))
+```
+
+输出:
+
+```
+['研究', '生命', '起源']
+['项', '目的', '研究']
+```
+
+4. 双向最长匹配
+
+```
+def count_single_char(word_list: list):  # 统计单字成词的个数
+    return sum(1 for word in word_list if len(word) == 1)
+
+
+def bidirectional_segment(text, dic):
+    f = forward_segment(text, dic)
+    b = backward_segment(text, dic)
+    if len(f) < len(b):                                  # 词数更少优先级更高
+        return f
+    elif len(f) > len(b):
+        return b
+    else:
+        if count_single_char(f) < count_single_char(b):  # 单字更少优先级更高
+            return f
+        else:
+            return b                                     # 都相等时逆向匹配优先级更高
+        
+
+print(bidirectional_segment('研究生命起源', dic))
+print(bidirectional_segment('项目的研究', dic))
+```
+
+输出:
+
+```
+['研究', '生命', '起源']
+['项', '目的', '研究']
+```
 
